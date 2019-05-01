@@ -9,12 +9,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.rkz98.registrodeatividades.Adapters.TasksAdapter;
-import com.rkz98.registrodeatividades.Models.DayOfWeek;
+import com.rkz98.registrodeatividades.Models.Task;
 import com.rkz98.registrodeatividades.Models.Enum.Days;
 
 import java.util.ArrayList;
@@ -22,8 +23,9 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener {
 
-    private List<DayOfWeek> daysOfWeek = new ArrayList<>();
-    private final TasksAdapter tasksAdapter  = new TasksAdapter(this, daysOfWeek);
+    private List<Task> tasks = new ArrayList<>();
+    private final TasksAdapter tasksAdapter  = new TasksAdapter(this, tasks);
+    private Task task = new Task();
 
 
     @Override
@@ -32,14 +34,22 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
         setContentView(R.layout.activity_main);
 
         ListView listView = findViewById(R.id.listView);
+        final EditText textInput = findViewById(R.id.textInputId);
         Button dateButton = findViewById(R.id.dateButtonId);
         Button timeButton = findViewById(R.id.timeButtonId);
-        Button confirmButton = findViewById(R.id.confirmButtonId);
+        final Button confirmButton = findViewById(R.id.confirmButtonId);
+
+        textInput.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                task.setTaskEnd(textInput.getText().toString());
+            }
+        });
 
         dateButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                setDaysOfWeek();
+                setDayOfWeek();
             }
         });
 
@@ -51,12 +61,19 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
             }
         });
 
+        confirmButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                confirmTask();
+            }
+        });
+
         listView.setAdapter(tasksAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                DayOfWeek selectedDayOfWeek = daysOfWeek.get(position);
-                Toast.makeText(MainActivity.this, "Dia selecionado: " + selectedDayOfWeek.getDay().getValue(), Toast.LENGTH_LONG).show();
+                Task selectedTask = tasks.get(position);
+                Toast.makeText(MainActivity.this, "Dia selecionado: " + selectedTask.getTaskEnd(), Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -64,10 +81,10 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
         Toast.makeText(MainActivity.this, hourOfDay + " horas e " + minute + " minutos", Toast.LENGTH_LONG).show();
-        tasksAdapter.notifyDataSetChanged();
+        task.setQuantityHours(hourOfDay);
     }
 
-    private void setDaysOfWeek() {
+    private void setDayOfWeek() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Escolha um dia da semana");
 
@@ -87,6 +104,7 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Toast.makeText(MainActivity.this, daysOfWeek[which], Toast.LENGTH_LONG).show();
+                task.setDayOfWeek(daysOfWeek[which]);
             }
         });
 
@@ -104,6 +122,14 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
     }
 
     public void confirmTask() {
-
+        if ((task.getDayOfWeek() != null) && (task.getQuantityHours() != 0) && (task.getTaskEnd() != null)) {
+            tasks.add(new Task(task.getTaskEnd(), task.getDayOfWeek(), task.getQuantityHours()));
+            tasksAdapter.notifyDataSetChanged();
+            task.setDayOfWeek(null);
+            task.setTaskEnd(null);
+            task.setQuantityHours(0);
+        } else {
+            Toast.makeText(MainActivity.this, "Por favor, valide os campos!", Toast.LENGTH_LONG).show();
+        }
     }
 }

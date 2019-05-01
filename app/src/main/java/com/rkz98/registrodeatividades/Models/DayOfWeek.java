@@ -1,22 +1,24 @@
 package com.rkz98.registrodeatividades.Models;
 
-import com.rkz98.registrodeatividades.Models.Enum.Days;
-
 public class DayOfWeek {
 
-    private Days day;
+    private String day;
     private Integer quantityHours;
 
-    public DayOfWeek(Days day, Integer quantityHours) {
+    public DayOfWeek() {
+
+    }
+
+    public DayOfWeek(String day, Integer quantityHours) {
         this.day = day;
         this.quantityHours = quantityHours;
     }
 
-    public Days getDay() {
+    public String getDay() {
         return day;
     }
 
-    public void setDay(Days day) {
+    public void setDay(String day) {
         this.day = day;
     }
 
