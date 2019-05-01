@@ -86,16 +86,17 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
         builder.setSingleChoiceItems(daysOfWeek, checkedItem, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
+                Toast.makeText(MainActivity.this, daysOfWeek[which], Toast.LENGTH_LONG).show();
             }
         });
 
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(MainActivity.this, daysOfWeek[which], Toast.LENGTH_LONG).show();
+
             }
         });
+
         builder.setNegativeButton("Cancelar", null);
 
         AlertDialog dialog = builder.create();
