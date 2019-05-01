@@ -15,11 +15,41 @@
         android:hint="O que está fazendo?"
         android:padding="20dp"/>
 
+    <Button
+        android:id="@+id/dateButtonId"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textInputId"
+        android:layout_alignParentLeft="true"
+        android:background="@color/textColorPrimary"
+        android:textColor="@color/whiteColor"
+        android:text="Dia da Semana"/>
+
+    <Button
+        android:id="@+id/timeButtonId"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textInputId"
+        android:layout_centerHorizontal="true"
+        android:background="@color/textColorPrimary"
+        android:textColor="@color/whiteColor"
+        android:text="Horário"/>
+
+    <Button
+        android:id="@+id/confirmButtonId"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/textInputId"
+        android:textColor="@color/textColorPrimary"
+        android:background="@color/colorPrimary"
+        android:text="Confirmar"/>
+
     <ListView
         android:id="@+id/listView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/textInputId">
+        android:layout_below="@id/dateButtonId">
     </ListView>
 
 </RelativeLayout>
